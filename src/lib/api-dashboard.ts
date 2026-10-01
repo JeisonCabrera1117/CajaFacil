@@ -8,6 +8,7 @@ export interface DashboardIndicadores {
   ticketPromedioMes: number;
   utilidadBrutaMes: number;
   productosStockBajo: number;
+  productosSobreStock: number;
   valorInventario: number;
 }
 

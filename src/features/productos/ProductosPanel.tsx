@@ -33,6 +33,7 @@ export function ProductosPanel() {
   const queryClient = useQueryClient();
   const [busqueda, setBusqueda] = useState("");
   const [soloStockBajo, setSoloStockBajo] = useState(false);
+  const [soloSobreStock, setSoloSobreStock] = useState(false);
   const [pagina, setPagina] = useState(1);
 
   const [dialogoAbierto, setDialogoAbierto] = useState(false);
@@ -41,11 +42,12 @@ export function ProductosPanel() {
   const [productoAEliminar, setProductoAEliminar] = useState<Producto | null>(null);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["productos", { busqueda, soloStockBajo, pagina }],
+    queryKey: ["productos", { busqueda, soloStockBajo, soloSobreStock, pagina }],
     queryFn: () =>
       apiInventario.productoList({
         busqueda: busqueda || undefined,
         soloStockBajo: soloStockBajo || undefined,
+        soloSobreStock: soloSobreStock || undefined,
         pagina,
         porPagina: POR_PAGINA,
       }),
@@ -87,6 +89,16 @@ export function ProductosPanel() {
           }}
         >
           Stock bajo
+        </Button>
+        <Button
+          variant={soloSobreStock ? "default" : "outline"}
+          size="sm"
+          onClick={() => {
+            setSoloSobreStock((v) => !v);
+            setPagina(1);
+          }}
+        >
+          Sobre-stock
         </Button>
         <div className="flex-1" />
         <Button
@@ -147,6 +159,11 @@ export function ProductosPanel() {
                       className="ml-2"
                     >
                       bajo
+                    </Badge>
+                  )}
+                  {p.stockMaximo != null && p.stockActual > p.stockMaximo && (
+                    <Badge variant="warning" className="ml-2">
+                      alto
                     </Badge>
                   )}
                 </TableCell>

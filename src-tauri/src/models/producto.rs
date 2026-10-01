@@ -54,6 +54,7 @@ pub struct ProductoFiltro {
     pub busqueda: Option<String>,
     pub categoria_id: Option<i64>,
     pub solo_stock_bajo: Option<bool>,
+    pub solo_sobre_stock: Option<bool>,
     pub pagina: Option<i64>,
     pub por_pagina: Option<i64>,
 }

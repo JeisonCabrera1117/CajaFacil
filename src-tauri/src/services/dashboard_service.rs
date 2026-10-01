@@ -64,6 +64,13 @@ pub fn indicadores(pool: &DbPool) -> AppResult<DashboardIndicadores> {
         |r| r.get(0),
     )?;
 
+    let productos_sobre_stock: i64 = conn.query_row(
+        "SELECT COUNT(*) FROM productos
+         WHERE estado='activo' AND stock_maximo IS NOT NULL AND stock_actual > stock_maximo",
+        [],
+        |r| r.get(0),
+    )?;
+
     let valor_inventario: i64 = conn.query_row(
         "SELECT COALESCE(SUM(stock_actual * precio_costo),0) FROM productos WHERE estado='activo'",
         [],
@@ -78,6 +85,7 @@ pub fn indicadores(pool: &DbPool) -> AppResult<DashboardIndicadores> {
         ticket_promedio_mes,
         utilidad_bruta_mes,
         productos_stock_bajo,
+        productos_sobre_stock,
         valor_inventario,
     })
 }
@@ -259,6 +267,26 @@ mod tests {
         assert_eq!(ind.productos_stock_bajo, 1);
         // La venta ya descontó 1 unidad del stock inicial (2), queda 1 unidad a 1000 c/u.
         assert_eq!(ind.valor_inventario, 1000);
+    }
+
+    #[test]
+    fn indicadores_cuenta_productos_en_sobre_stock() {
+        let pool = pool_de_prueba();
+        // Sin stock_maximo: nunca debe contar como sobre-stock aunque tenga mucho.
+        crear_producto(&pool, "SKU-D3", 1000, 2000, 500);
+
+        let conn = pool.get().unwrap();
+        conn.execute(
+            "INSERT INTO productos (sku, nombre, unidad_medida, precio_costo, precio_venta,
+                                     stock_actual, stock_minimo, stock_maximo)
+             VALUES ('SKU-D4', 'Producto', 'unidad', 1000, 2000, 50, 5, 20)",
+            [],
+        )
+        .unwrap();
+        drop(conn);
+
+        let ind = indicadores(&pool).unwrap();
+        assert_eq!(ind.productos_sobre_stock, 1);
     }
 
     #[test]

@@ -58,6 +58,9 @@ pub fn listar(pool: &DbPool, filtro: ProductoFiltro) -> AppResult<ProductoPagina
     if filtro.solo_stock_bajo.unwrap_or(false) {
         condiciones.push("stock_actual <= stock_minimo".into());
     }
+    if filtro.solo_sobre_stock.unwrap_or(false) {
+        condiciones.push("(stock_maximo IS NOT NULL AND stock_actual > stock_maximo)".into());
+    }
 
     let where_clause = condiciones.join(" AND ");
 
@@ -216,4 +219,56 @@ pub fn eliminar(pool: &DbPool, id: i64) -> AppResult<()> {
     drop(conn);
     audit_service::registrar(pool, "producto", Some(id), "eliminar", &id)?;
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::models::producto::ProductoFiltro;
+    use tempfile::tempdir;
+
+    fn pool_de_prueba() -> DbPool {
+        let dir = tempdir().unwrap();
+        let path = dir.path().join("test.sqlite3");
+        let pool = crate::db::init_pool(&path).unwrap();
+        std::mem::forget(dir);
+        pool
+    }
+
+    fn crear_producto(
+        pool: &DbPool,
+        sku: &str,
+        stock_actual: i64,
+        stock_minimo: i64,
+        stock_maximo: Option<i64>,
+    ) {
+        let conn = pool.get().unwrap();
+        conn.execute(
+            "INSERT INTO productos (sku, nombre, unidad_medida, precio_costo, precio_venta,
+                                     stock_actual, stock_minimo, stock_maximo)
+             VALUES (?1, 'Producto', 'unidad', 1000, 2000, ?2, ?3, ?4)",
+            params![sku, stock_actual, stock_minimo, stock_maximo],
+        )
+        .unwrap();
+    }
+
+    #[test]
+    fn filtro_solo_sobre_stock_requiere_maximo_definido_y_superado() {
+        let pool = pool_de_prueba();
+        crear_producto(&pool, "SKU-P1", 50, 5, Some(20)); // sobre-stock
+        crear_producto(&pool, "SKU-P2", 50, 5, None); // sin máximo: no cuenta
+        crear_producto(&pool, "SKU-P3", 10, 5, Some(20)); // dentro del máximo
+
+        let pagina = listar(
+            &pool,
+            ProductoFiltro {
+                solo_sobre_stock: Some(true),
+                ..Default::default()
+            },
+        )
+        .unwrap();
+
+        assert_eq!(pagina.items.len(), 1);
+        assert_eq!(pagina.items[0].sku, "SKU-P1");
+    }
 }

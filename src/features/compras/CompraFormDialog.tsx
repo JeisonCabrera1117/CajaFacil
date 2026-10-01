@@ -182,13 +182,12 @@ export function CompraFormDialog({ abierto, onOpenChange }: Props) {
                     min="1"
                     step="1"
                     value={item.cantidad}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const cantidad = e.currentTarget.value;
                       setItems((prev) =>
-                        prev.map((it, i) =>
-                          i === idx ? { ...it, cantidad: e.currentTarget.value } : it,
-                        ),
-                      )
-                    }
+                        prev.map((it, i) => (i === idx ? { ...it, cantidad } : it)),
+                      );
+                    }}
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -198,13 +197,12 @@ export function CompraFormDialog({ abierto, onOpenChange }: Props) {
                     min="0"
                     step="0.01"
                     value={item.costoUnitario}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const costoUnitario = e.currentTarget.value;
                       setItems((prev) =>
-                        prev.map((it, i) =>
-                          i === idx ? { ...it, costoUnitario: e.currentTarget.value } : it,
-                        ),
-                      )
-                    }
+                        prev.map((it, i) => (i === idx ? { ...it, costoUnitario } : it)),
+                      );
+                    }}
                   />
                 </div>
                 <Button

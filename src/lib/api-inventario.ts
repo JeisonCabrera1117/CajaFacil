@@ -51,6 +51,7 @@ export interface ProductoFiltro {
   busqueda?: string;
   categoriaId?: number | null;
   soloStockBajo?: boolean;
+  soloSobreStock?: boolean;
   pagina?: number;
   porPagina?: number;
 }

@@ -8,6 +8,7 @@ import { GraficaProductos } from "@/features/dashboard/GraficaProductos";
 import { GraficaDonas } from "@/features/dashboard/GraficaDonas";
 import { Comparativo } from "@/features/dashboard/Comparativo";
 import { AlertasStock } from "@/features/dashboard/AlertasStock";
+import { AlertasSobreStock } from "@/features/dashboard/AlertasSobreStock";
 
 export function Dashboard() {
   const [desde, setDesde] = useState(primerDiaMesISO());
@@ -29,6 +30,7 @@ export function Dashboard() {
       {indicadores && <StatTiles indicadores={indicadores} />}
 
       <AlertasStock />
+      <AlertasSobreStock />
 
       {graficas && (
         <>

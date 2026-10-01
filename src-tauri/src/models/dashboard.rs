@@ -10,6 +10,7 @@ pub struct DashboardIndicadores {
     pub ticket_promedio_mes: i64,
     pub utilidad_bruta_mes: i64,
     pub productos_stock_bajo: i64,
+    pub productos_sobre_stock: i64,
     pub valor_inventario: i64,
 }
 
