@@ -1,0 +1,153 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@import "@fontsource/poppins/latin-500.css";
+@import "@fontsource/poppins/latin-ext-500.css";
+@import "@fontsource/poppins/latin-600.css";
+@import "@fontsource/poppins/latin-ext-600.css";
+@import "@fontsource/poppins/latin-700.css";
+@import "@fontsource/poppins/latin-ext-700.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: "Poppins", "Geist Variable", sans-serif;
+  --font-sans: "Geist Variable", sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Paleta inspirada en monday.com: azul de acento (#0073EA), fondo gris muy
+ * claro con tarjetas blancas, y verde/ámbar/rojo reservados para estados
+ * (éxito/alerta/error) igual que sus "status labels". Los 5 colores de
+ * --chart-1.._5 son categóricos (no de estado) para no confundir "rojo en
+ * una gráfica" con "error" — ver src/features/dashboard/paleta.ts. */
+:root {
+  --background: oklch(0.98 0.004 286);
+  --foreground: oklch(0.28 0.014 286);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.28 0.014 286);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.28 0.014 286);
+  --primary: #0073ea;
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.955 0.006 286);
+  --secondary-foreground: oklch(0.28 0.014 286);
+  --muted: oklch(0.955 0.006 286);
+  --muted-foreground: oklch(0.52 0.014 286);
+  --accent: oklch(0.955 0.006 286);
+  --accent-foreground: oklch(0.28 0.014 286);
+  --destructive: #e2445c;
+  --success: #00c875;
+  --success-foreground: oklch(0.99 0 0);
+  --warning: #d98216;
+  --warning-foreground: oklch(0.99 0 0);
+  --border: oklch(0.914 0.006 286);
+  --input: oklch(0.914 0.006 286);
+  --ring: #0073ea;
+  --chart-1: #579bfc;
+  --chart-2: #a25ddc;
+  --chart-3: #00c875;
+  --chart-4: #fdab3d;
+  --chart-5: oklch(0.72 0.006 286);
+  --radius: 0.75rem;
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.28 0.014 286);
+  --sidebar-primary: #0073ea;
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: color-mix(in oklab, #0073ea 12%, white);
+  --sidebar-accent-foreground: #0073ea;
+  --sidebar-border: oklch(0.914 0.006 286);
+  --sidebar-ring: #0073ea;
+}
+
+.dark {
+  --background: oklch(0.19 0.02 275);
+  --foreground: oklch(0.94 0.008 275);
+  --card: oklch(0.24 0.022 275);
+  --card-foreground: oklch(0.94 0.008 275);
+  --popover: oklch(0.24 0.022 275);
+  --popover-foreground: oklch(0.94 0.008 275);
+  --primary: #3d94f5;
+  --primary-foreground: oklch(0.16 0.02 275);
+  --secondary: oklch(0.3 0.02 275);
+  --secondary-foreground: oklch(0.94 0.008 275);
+  --muted: oklch(0.3 0.02 275);
+  --muted-foreground: oklch(0.68 0.014 275);
+  --accent: oklch(0.3 0.02 275);
+  --accent-foreground: oklch(0.94 0.008 275);
+  --destructive: #ff6b81;
+  --success: #2ecf82;
+  --success-foreground: oklch(0.16 0.02 275);
+  --warning: #fdab3d;
+  --warning-foreground: oklch(0.16 0.02 275);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: #3d94f5;
+  --chart-1: #6aa9fb;
+  --chart-2: #b57ee0;
+  --chart-3: #2ecf82;
+  --chart-4: #fdab3d;
+  --chart-5: oklch(0.6 0.014 275);
+  --sidebar: oklch(0.24 0.022 275);
+  --sidebar-foreground: oklch(0.94 0.008 275);
+  --sidebar-primary: #3d94f5;
+  --sidebar-primary-foreground: oklch(0.16 0.02 275);
+  --sidebar-accent: color-mix(in oklab, #3d94f5 20%, oklch(0.24 0.022 275));
+  --sidebar-accent-foreground: #3d94f5;
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: #3d94f5;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}

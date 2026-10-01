@@ -1,0 +1,64 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "CajaFácil",
+  "version": "0.1.0",
+  "identifier": "com.daniel.cajafacil",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "CajaFácil",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 1024,
+        "minHeight": 640
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["msi", "nsis"],
+    "publisher": "Daniel",
+    "copyright": "© 2026 Daniel",
+    "category": "Business",
+    "shortDescription": "Gestión de ventas e inventario",
+    "longDescription": "CajaFácil: administración de ventas, inventario y reportes para un solo equipo.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      },
+      "nsis": {
+        "displayLanguageSelector": false,
+        "languages": ["Spanish", "English"],
+        "installMode": "currentUser",
+        "installerHooks": "installer-hooks.nsh"
+      },
+      "wix": {
+        "language": ["es-ES"]
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEM5NTJDODIyOEYwNTU3MjIKUldRaVZ3V1BJc2hTeWFUaWxVZEk3ZDVvRHJYOGpEZWxzSHRnZ01MQmFOeVlkbXFsZ3lObnNHY2EK",
+      "endpoints": [
+        "https://TODO-configurar-hosting-de-releases.example.com/updater/{{target}}/{{arch}}/{{current_version}}"
+      ]
+    }
+  }
+}

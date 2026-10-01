@@ -1,0 +1,51 @@
+name: Compilar instalador de Windows
+
+# Se dispara manualmente por ahora. Cuando el proyecto se suba a GitHub y se
+# quiera automatizar la publicación de releases, se puede agregar un trigger
+# `push: tags: ["v*"]`.
+#
+# Firma del updater: si los secretos TAURI_SIGNING_PRIVATE_KEY y
+# TAURI_SIGNING_PRIVATE_KEY_PASSWORD existen en el repositorio, `tauri build`
+# firma automáticamente los instaladores y genera el archivo `latest.json`
+# que el plugin updater necesita. La clave privada se genera localmente con
+# `pnpm tauri signer generate` y NUNCA debe subirse al repositorio; solo se
+# guarda como secreto de GitHub. Mientras no haya un servidor de
+# actualizaciones configurado (ver endpoint en tauri.conf.json), el updater
+# simplemente fallará la verificación en silencio para el usuario final.
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Instalar dependencias del frontend
+        run: pnpm install --frozen-lockfile
+
+      - name: Compilar instalador (.msi y .exe)
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: pnpm tauri build
+
+      - name: Publicar artefactos
+        uses: actions/upload-artifact@v4
+        with:
+          name: cajafacil-instaladores-windows
+          path: |
+            src-tauri/target/release/bundle/msi/*.msi
+            src-tauri/target/release/bundle/nsis/*.exe
+            src-tauri/target/release/bundle/msi/*.msi.zip.sig
+            src-tauri/target/release/bundle/nsis/*.nsis.zip.sig

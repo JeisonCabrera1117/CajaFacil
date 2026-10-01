@@ -1,0 +1,15 @@
+pub mod caja;
+pub mod categoria;
+pub mod cliente;
+pub mod compra;
+pub mod comprobante;
+pub mod config;
+pub mod dashboard;
+pub mod devolucion;
+pub mod importacion;
+pub mod inventario_fisico;
+pub mod movimiento;
+pub mod producto;
+pub mod proveedor;
+pub mod reporte;
+pub mod venta;
