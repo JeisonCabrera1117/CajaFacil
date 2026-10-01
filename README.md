@@ -8,6 +8,7 @@ TypeScript.
 ¿Cómo funciona por dentro? Ver [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md).
 ¿Cómo está armado el diseño? Ver [`docs/DISENO.md`](docs/DISENO.md).
 ¿Qué falta para un instalador real? Ver [`docs/PENDIENTES.md`](docs/PENDIENTES.md).
+¿Cómo se usa la aplicación? Ver [`docs/MANUAL_USUARIO.pdf`](docs/MANUAL_USUARIO.pdf).
 
 ## Estado del proyecto
 
